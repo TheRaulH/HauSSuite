@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_2" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 433.57 220.6">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #003866;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        font-family: Outfit-Black, Outfit;
+        font-size: 42px;
+        font-weight: 800;
+      }
+
+      .cls-4 {
+        stroke: #003866;
+        stroke-miterlimit: 10;
+        stroke-width: 4px;
+      }
+
+      .cls-4, .cls-5 {
+        fill: #ff5300;
+      }
+
+      .cls-6 {
+        letter-spacing: 0em;
+      }
+    </style>
+  </defs>
+  <g id="Capa_1-2" data-name="Capa 1">
+    <g>
+      <g>
+        <path class="cls-1" d="M41.41,216.6V55.24h388.16v116.68c0,24.64-20.04,44.68-44.68,44.68H41.41Z"/>
+        <path class="cls-2" d="M425.57,59.24v112.68c0,22.47-18.21,40.68-40.68,40.68H45.41V59.24h380.16M433.57,51.24H37.41v169.36h347.48c26.84,0,48.68-21.84,48.68-48.68V51.24h0Z"/>
+      </g>
+      <path class="cls-5" d="M179.33,13.16H19.49v59.76h134.89c3.07,0,6.01-1.22,8.17-3.39l13.39-13.39c2.17-2.17,3.39-5.11,3.39-8.17V13.16Z"/>
+      <circle class="cls-4" cx="42.5" cy="42.5" r="40.5"/>
+      <text class="cls-3" transform="translate(86.8 57.63)"><tspan x="0" y="0">OF</tspan><tspan class="cls-6" x="60.14" y="0">F</tspan></text>
+    </g>
+  </g>
+</svg>
