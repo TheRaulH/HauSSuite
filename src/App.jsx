@@ -49,8 +49,14 @@ function App() {
     entries: catalogEntries,
     loaded: catalogLoaded,
     lookup: catalogLookup,
+    loading: catalogLoading,
+    error: catalogError,
+    createEntry: catalogCreateEntry,
+    updateEntry: catalogUpdateEntry,
+    deleteEntry: catalogDeleteEntry,
     importCatalog,
     clearCatalog,
+    refresh: catalogRefresh,
   } = useCatalog();
 
   const [generatedImages, setGeneratedImages] = useState([]);
@@ -69,22 +75,20 @@ function App() {
 
   const previewProduct = selectedProducts[0] ?? products[0] ?? DEMO_PRODUCT;
 
-  const catalog = useCatalog();
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       <main className="max-w-5xl mx-auto px-6 py-6 flex flex-col gap-6">
         <CatalogManager
-          entries={catalog.entries}
-          loaded={catalog.loaded}
-          loading={catalog.loading}
-          error={catalog.error}
-          createEntry={catalog.createEntry}
-          updateEntry={catalog.updateEntry}
-          deleteEntry={catalog.deleteEntry}
-          clearCatalog={catalog.clearCatalog}
-          refresh={catalog.refresh}
+          entries={catalogEntries}
+          loaded={catalogLoaded}
+          loading={catalogLoading}
+          error={catalogError}
+          createEntry={catalogCreateEntry}
+          updateEntry={catalogUpdateEntry}
+          deleteEntry={catalogDeleteEntry}
+          clearCatalog={clearCatalog}
+          refresh={catalogRefresh}
         />
 
         <FileUploader onImport={importProducts} catalogLookup={catalogLookup} />

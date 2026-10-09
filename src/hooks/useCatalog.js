@@ -34,7 +34,6 @@ export function useCatalog() {
     } catch (err) {
       console.error('Error al cargar el catálogo:', err);
       setError(err);
-      throw err;
     } finally {
       setLoading(false);
       setLoaded(true);
