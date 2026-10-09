@@ -13,4 +13,11 @@
 @theme {
   --font-sans: 'Outfit', ui-sans-serif, system-ui, sans-serif;
   --font-kg: 'KGFont';
+
+  /* Colores de marca (ver también modules/brand-kit/brandData.js) */
+  --color-haus-blue: #123b64;
+  --color-haus-orange: #e76100;
+  --color-haus-sand: #f3e4cd;
+  --color-haus-sky: #dce3eb;
+  --color-haus-cream: #faf7f0;
 }
