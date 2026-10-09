@@ -212,7 +212,16 @@ export function useCatalog() {
     (nombre) => {
       if (!nombre) return null;
 
-      return lookupMap.get(normalizeDescripcion(nombre)) ?? null;
+      const entry = lookupMap.get(normalizeDescripcion(nombre));
+      if (!entry) return null;
+
+      // Supabase devuelve snake_case (codigo_buscar), pero el resto de la app
+      // (aplicarCatalogoAProductos) espera camelCase: se entregan ambos.
+      return {
+        ...entry,
+        codigoBuscar: entry.codigo_buscar,
+        codigoMostrar: entry.codigo_mostrar,
+      };
     },
     [lookupMap]
   );
