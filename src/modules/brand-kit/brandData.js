@@ -17,13 +17,13 @@ import curvaAzulUrl from '../../assets/CurvaAzul.svg?url'
  */
 
 export const COLORS = [
-  { id: 'azul-logo', name: 'Azul del logo', hex: '#003866', use: 'Color exacto de los archivos del logo' },
-  { id: 'azul', name: 'Azul Hauscenter', hex: '#123B64', use: 'Fondos de artes, logos y elementos corporativos' },
-  { id: 'naranja', name: 'Naranja promocional', hex: '#E76100', use: 'Ofertas, acentos comerciales' },
-  { id: 'crema', name: 'Crema', hex: '#FAF7F0', use: 'Fondos claros' },
-  { id: 'arena', name: 'Arena cálido', hex: '#F3E4CD', use: 'Fondos y contraste' },
-  { id: 'azul-apoyo', name: 'Azul de apoyo', hex: '#DCE3EB', use: 'Fondos de apoyo' },
-  { id: 'blanco', name: 'Blanco', hex: '#FFFFFF', use: 'Textos sobre azul, fondos' },
+  { id: 'azul', name: 'Azul Hauscenter', hex: '#123B64', use: 'Color patrimonial: siempre la base (Pantone 2955 C)' },
+  { id: 'arena', name: 'Arena cálida', hex: '#F3E4CD', use: 'Cercanía y calidez (Pantone 9180 C)' },
+  { id: 'azul-apoyo', name: 'Azul apoyo', hex: '#DCE3EB', use: 'Jerarquías suaves del universo corporativo (Pantone 656 C)' },
+  { id: 'blanco-calido', name: 'Blanco cálido', hex: '#FAF7F0', use: 'Limpieza y fondos claros' },
+  { id: 'naranja', name: 'Naranja comercial', hex: '#E76100', use: 'Modo Vivo: solo precios, CTA, urgencia y descuentos (Pantone Orange 021 C)' },
+  { id: 'verde-oliva', name: 'Verde oliva', hex: '#7C8861', use: 'Modo Hogar: detalles editoriales y comunicación emocional (Pantone 5773 C)' },
+  { id: 'blanco', name: 'Blanco', hex: '#FFFFFF', use: 'Textos sobre azul y fondos' },
 ]
 
 export const FONTS = [
