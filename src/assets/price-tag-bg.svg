@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1080 513.01">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: 0em;
+      }
+
+      .cls-2 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-3 {
+        font-family: Outfit-Bold, Outfit;
+        font-size: 84.06px;
+      }
+
+      .cls-3, .cls-4, .cls-5, .cls-6 {
+        fill: #fff;
+      }
+
+      .cls-3, .cls-6 {
+        font-weight: 700;
+      }
+
+      .cls-5 {
+        font-family: Outfit-SemiBold, Outfit;
+        font-size: 53.13px;
+        font-weight: 600;
+      }
+
+      .cls-7 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-8 {
+        letter-spacing: -.01em;
+      }
+
+      .cls-9 {
+        clip-rule: evenodd;
+        fill: none;
+      }
+
+      .cls-6 {
+        font-family: Outfit-ExtraBold, Outfit;
+        font-size: 64.44px;
+      }
+
+      .cls-10 {
+        fill: #ff5300;
+      }
+
+      .cls-11 {
+        fill: #003866;
+        fill-rule: evenodd;
+      }
+
+      .cls-12 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <path class="cls-9" d="M829.03,513.01H64.07C28.68,513.01,0,484.33,0,448.94v-19.95c0-35.38,28.68-64.07,64.07-64.07h829.03s0,84.02,0,84.02c0,35.38-28.68,64.07-64.07,64.07Z"/>
+    </clipPath>
+  </defs>
+  <path class="cls-10" d="M0,22.68v213.93C0,290.08,47.3,333.42,105.65,333.42h847.11c38.51,0,74.95-17.03,99.11-46.32h0c18.2-22.08,28.13-49.57,28.13-77.91V22.68H0Z"/>
+  <path class="cls-11" d="M0,.01v92.69h337.82c4.94,0,9.67-1.97,13.16-5.46l20.07-20.13c3.48-3.49,5.44-8.23,5.44-13.16V.01S0,.01,0,.01Z"/>
+  <text class="cls-3" transform="translate(76.57 71.18)"><tspan x="0" y="0">Aho</tspan><tspan class="cls-2" x="157.77" y="0">r</tspan><tspan x="192.49" y="0">a</tspan></text>
+  <g>
+    <path class="cls-11" d="M883.8,513.01H64.07C28.68,513.01,0,484.33,0,448.94v-19.95c0-35.38,28.68-64.07,64.07-64.07h883.8s0,84.02,0,84.02c0,35.38-28.68,64.07-64.07,64.07Z"/>
+    <text class="cls-6" transform="translate(50 454.91)"><tspan x="0" y="0">C</tspan><tspan class="cls-7" x="44.59" y="0">r</tspan><tspan class="cls-1" x="71.85" y="0">ediHaus</tspan></text>
+    <rect class="cls-4" x="388.68" y="388.6" width="1.74" height="94.97"/>
+    <text class="cls-5" transform="translate(416.44 454.31)"><tspan x="0" y="0">11 cu</tspan><tspan class="cls-8" x="103.55" y="0">ot</tspan><tspan x="153.18" y="0">as</tspan></text>
+    <g class="cls-12">
+      <path class="cls-10" d="M-27.73,471.53h-227.06c-35.38,0-64.07-28.68-64.07-64.07v-19.95c0-35.38,28.68-64.07,64.07-64.07H36.33v84.02c0,35.38-28.68,64.07-64.07,64.07Z"/>
+    </g>
+  </g>
+</svg>

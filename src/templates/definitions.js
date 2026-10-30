@@ -28,45 +28,50 @@
  * validateDesign en utils/templateModel.js).
  */
 
-import ExpoHausSquare from './expohaus/Square'
-import ExpoHausPortrait from './expohaus/Portrait'
-import ExpoHausLandscape from './expohaus/Landscape'
-import ExpoHausStory from './expohaus/Story'
+import ExpoHausSquare from './expohaus/Square';
+import ExpoHausPortrait from './expohaus/Portrait';
+import ExpoHausLandscape from './expohaus/Landscape';
+import ExpoHausStory from './expohaus/Story';
 
-import PromoSquare from './10_promo/Square'
-import PromoPortrait from './10_promo/Portrait'
-import PromoLandscape from './10_promo/Landscape'
-import PromoStory from './10_promo/Story'
+import PromoSquare from './10_promo/Square';
+import PromoPortrait from './10_promo/Portrait';
+import PromoLandscape from './10_promo/Landscape';
+import PromoStory from './10_promo/Story';
 
-import GeneralSquare from './10_general/Square'
-import GeneralPortrait from './10_general/Portrait'
-import GeneralLandscape from './10_general/Landscape'
-import GeneralStory from './10_general/Story'
+import GeneralSquare from './10_general/Square';
+import GeneralPortrait from './10_general/Portrait';
+import GeneralLandscape from './10_general/Landscape';
+import GeneralStory from './10_general/Story';
 
-import NewsSquare from './10_news/Square'
-import NewsPortrait from './10_news/Portrait'
-import NewsLandscape from './10_news/Landscape'
-import NewsStory from './10_news/Story'
+import NewsSquare from './10_news/Square';
+import NewsPortrait from './10_news/Portrait';
+import NewsLandscape from './10_news/Landscape';
+import NewsStory from './10_news/Story';
 
-import NewsMatterSSSquare from './10_newsmatterss/Square'
-import NewsMatterSSPortrait from './10_newsmatterss/Portrait'
-import NewsMatterSSLandscape from './10_newsmatterss/Landscape'
-import NewsMatterSSStory from './10_newsmatterss/Story'
+import NewsMatterSSSquare from './10_newsmatterss/Square';
+import NewsMatterSSPortrait from './10_newsmatterss/Portrait';
+import NewsMatterSSLandscape from './10_newsmatterss/Landscape';
+import NewsMatterSSStory from './10_newsmatterss/Story';
 
-import MattersPromoBadgeSquare from './10_MattressPromoBadge/Square'
-import MattersPromoBadgePortrait from './10_MattressPromoBadge/Portrait'
-import MattersPromoBadgeLandscape from './10_MattressPromoBadge/Landscape'
-import MattersPromoBadgeStory from './10_MattressPromoBadge/Story'
+import MattersPromoBadgeSquare from './10_MattressPromoBadge/Square';
+import MattersPromoBadgePortrait from './10_MattressPromoBadge/Portrait';
+import MattersPromoBadgeLandscape from './10_MattressPromoBadge/Landscape';
+import MattersPromoBadgeStory from './10_MattressPromoBadge/Story';
 
-import GiftProductSquare from './10_GiftProduct/Square'
-import GiftProductPortrait from './10_GiftProduct/Portrait'
-import GiftProductLandscape from './10_GiftProduct/Landscape'
-import GiftProductStory from './10_GiftProduct/Story'
+import GiftProductSquare from './10_GiftProduct/Square';
+import GiftProductPortrait from './10_GiftProduct/Portrait';
+import GiftProductLandscape from './10_GiftProduct/Landscape';
+import GiftProductStory from './10_GiftProduct/Story';
 
-import OnlineOffersSquare from './10_OnlineOffers/Square'
-import OnlineOffersPortrait from './10_OnlineOffers/Portrait'
-import OnlineOffersLandscape from './10_OnlineOffers/Landscape'
-import OnlineOffersStory from './10_OnlineOffers/Story'
+import OnlineOffersSquare from './10_OnlineOffers/Square';
+import OnlineOffersPortrait from './10_OnlineOffers/Portrait';
+import OnlineOffersLandscape from './10_OnlineOffers/Landscape';
+import OnlineOffersStory from './10_OnlineOffers/Story';
+
+import GeneralSquare11 from './11_general/Square';
+import GeneralPortrait11 from './11_general/Portrait';
+import GeneralLandscape11 from './11_general/Landscape';
+import GeneralStory11 from './11_general/Story';
 
 export const DESIGNS = [
   {
@@ -115,7 +120,11 @@ export const DESIGNS = [
     formatos: {
       square: { width: 1080, height: 1080, Component: NewsMatterSSSquare },
       portrait: { width: 1080, height: 1350, Component: NewsMatterSSPortrait },
-      landscape: { width: 1920, height: 1080, Component: NewsMatterSSLandscape },
+      landscape: {
+        width: 1920,
+        height: 1080,
+        Component: NewsMatterSSLandscape,
+      },
       story: { width: 1080, height: 1920, Component: NewsMatterSSStory },
     },
   },
@@ -124,8 +133,16 @@ export const DESIGNS = [
     nombre: 'SOLO CON COLCHONES',
     formatos: {
       square: { width: 1080, height: 1080, Component: MattersPromoBadgeSquare },
-      portrait: { width: 1080, height: 1350, Component: MattersPromoBadgePortrait },
-      landscape: { width: 1920, height: 1080, Component: MattersPromoBadgeLandscape },
+      portrait: {
+        width: 1080,
+        height: 1350,
+        Component: MattersPromoBadgePortrait,
+      },
+      landscape: {
+        width: 1920,
+        height: 1080,
+        Component: MattersPromoBadgeLandscape,
+      },
       story: { width: 1080, height: 1920, Component: MattersPromoBadgeStory },
     },
   },
@@ -145,10 +162,22 @@ export const DESIGNS = [
     formatos: {
       square: { width: 1080, height: 1080, Component: OnlineOffersSquare },
       portrait: { width: 1080, height: 1350, Component: OnlineOffersPortrait },
-      landscape: { width: 1920, height: 1080, Component: OnlineOffersLandscape },
+      landscape: {
+        width: 1920,
+        height: 1080,
+        Component: OnlineOffersLandscape,
+      },
       story: { width: 1080, height: 1920, Component: OnlineOffersStory },
     },
   },
-
-
-]
+  {
+    id: '11_general',
+    nombre: 'GENERAL NOVIEMBRE',
+    formatos: {
+      square: { width: 1080, height: 1080, Component: GeneralSquare11 },
+      portrait: { width: 1080, height: 1350, Component: GeneralPortrait11 },
+      landscape: { width: 1920, height: 1080, Component: GeneralLandscape11 },
+      story: { width: 1080, height: 1920, Component: GeneralStory11 },
+    },
+  },
+];
