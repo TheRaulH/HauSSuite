@@ -1,5 +1,6 @@
 import React from 'react';
 import { formatMoney } from '../templates/shared';
+import priceTagBg from '../assets/price-tag-bg.svg';
 
 const tieneValor = (valor) =>
   valor !== null && valor !== undefined && valor !== '';
@@ -71,7 +72,7 @@ export default function PriceTag({
 
       {/* FONDO SVG */}
       <img
-        src="src\assets\price-tag-bg.svg"
+        src={priceTagBg}
         alt=""
         draggable={false}
         style={{

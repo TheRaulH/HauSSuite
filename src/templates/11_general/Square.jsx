@@ -44,6 +44,10 @@ const tienePrecioAntes = (valor) => {
 // Marcas abreviadas -> nombre completo (agrega las que necesites)
 const MARCAS = {
   WH: 'WESTINGHOUSE',
+  SG: 'SAMSUNG',
+  EL: 'ELECTROLUX',
+  AM: 'AIR MONSTER',
+  SY: 'SONY'
   // LG: 'LG', SAM: 'SAMSUNG', PHI: 'PHILIPS', ...
 };
 
@@ -62,7 +66,7 @@ const esCodigoModelo = (t) => /^[A-Z]{2,6}-?\d{2,}[A-Z0-9-]*\+?$/i.test(t);
 
 // Especificaciones técnicas tipo O28*,C20*,S24/28 | L12/14 | S20*/24*
 const esEspecificacion = (t) =>
-  t.includes('*') || /^[A-Z]{1,2}\d{2}(\/\d{2})?[,]?$/i.test(t);
+  t.includes('*') || /^[OCSL]{1,2}\d{2}(\/\d{2})?[,]?$/i.test(t);
 
 const expandirToken = (token) => {
   const key = token.toUpperCase();
@@ -70,11 +74,34 @@ const expandirToken = (token) => {
   if (ABREVIATURAS[key]) return ABREVIATURAS[key];
 
   // C/TAPA -> CON TAPA | S/TAPA -> SIN TAPA | P/HORNO -> PARA HORNO
+  // C/NEGRO -> COLOR NEGRO
+  if (key === 'C/NEGRO') return 'COLOR NEGRO';
+  if (key === 'C/GREY') return 'COLOR GRIS';
+  if (key === 'C/SILVER') return 'COLOR PLATA';
+  if (key === 'C/AZUL') return 'COLOR AZUL';
+  if (key === 'C/OCEAN') return 'COLOR OCEAN';
+  if (key === 'C/STARRY') return 'COLOR STARRY';
+  if (key === 'C/MIDNIGHT') return 'COLOR MIDNIGHT';
+  if (key === 'C/ALPS') return 'COLOR ALPS';
+  if (key === 'C/SHADOW') return 'COLOR SHADOW';
+  if (key === 'C/CLOUDLINE') return 'COLOR CLOUDLINE';
+  if (key === 'C/POLARIS') return 'COLOR POLARIS';
+  if (key === 'C/VERDE') return 'COLOR VERDE';
+  if (key === 'C/VIOLETA') return 'COLOR VIOLETA';
+  if (key === 'C/QUIET') return 'COLOR QUIET';
+  if (key === 'C/FOREST') return 'COLOR FOREST';
+  if (key === 'C/SUNRISE') return 'COLOR SUNRISE';
+  if (key === 'C/CELESTE') return 'COLOR CELESTE';
+  if (key === 'C/SUNLIKE') return 'COLOR SUNLIKE';
+
+
   const m = key.match(/^([CSP])\/(.+)$/);
+
   if (m) {
     const prep = { C: 'CON', S: 'SIN', P: 'PARA' }[m[1]];
     return `${prep} ${m[2]}`;
   }
+
   return token;
 };
 
@@ -98,8 +125,7 @@ const formatearNombreProducto = (nombre) => {
     resultado = resultado.replace(regex, reemplazo);
   });
 
-  resultado = resultado
-    .replace(/\+/g, '')
+  resultado = resultado 
     .replace(/\s{2,}/g, ' ')
     .trim();
 
@@ -231,49 +257,22 @@ const obtenerTextoRegalo = (codigo, nombre) => {
   const codigoLimpio = codigo?.trim().toUpperCase() || '';
   const nombreLimpio = nombre?.trim().toUpperCase() || '';
 
-  // LAVADORAS
-  if (nombreLimpio.startsWith('LAVADORA')) {
-    return 'Por la compra de tu lavadora llévate un cesto de regalo';
-  }
-
-  // TELEVISORES
-  if (nombreLimpio.startsWith('TELEVISOR')) {
-    return 'Por la compra de tu televisor llévate tu soporte al 50%';
-  }
-
   //SOPORTES
   if (nombreLimpio.startsWith('SOPORTE')) {
     return 'Descuento valido solo por la compra de tu televisor';
+  } 
+
+  //TELEVISOR
+  if (nombreLimpio.startsWith('TELEVISORs')) {
+    return 'Por la compra de tu televisor llévate tu soporte de regalo';
+  } 
+
+  //TELEVISOR + COSERVADORA
+  if (nombreLimpio.startsWith('TELEVISOR')) {
+    return 'Por la compra de tu televisor llévate tu conservadora de regalo';
   }
 
-  //PARLANTE
-  if (nombreLimpio.startsWith('PARLANTE')) {
-    return 'Por la compra de tu parlante llévate un microfono al 50%';
-  }
-
-  //EQUIPO DE SONIDO
-  if (
-    nombreLimpio.startsWith('EQUIPO DE SONIDO') ||
-    nombreLimpio.startsWith('EQUIPOS DE SONIDO')
-  ) {
-    return 'Por la compra de tu equipo llévate un microfono al 50%';
-  }
-
-  //MENAJE
-  if (
-    nombreLimpio.startsWith('WOK') ||
-    nombreLimpio.startsWith('SET DE 2 TAPA') ||
-    nombreLimpio.startsWith('SARTEN') ||
-    nombreLimpio.startsWith('PARRILLA') ||
-    nombreLimpio.startsWith('OLLA') ||
-    nombreLimpio.startsWith('JGO') ||
-    nombreLimpio.startsWith('CREPERA') ||
-    nombreLimpio.startsWith('CACEROLA') ||
-    nombreLimpio.startsWith('BANDEJA') ||
-    nombreLimpio.startsWith('AFILADOR')
-  ) {
-    return 'Por tu compra llévate una bandeja al 50% de descuento';
-  }
+  
 
   // CAFETERAS CON TAZA + CAFÉ
   const codigosTazaMasCafe = ['WKCMA612', 'EP-1224/00', 'EP1224/00'];
@@ -408,11 +407,11 @@ export default function Square({ product, image }) {
         before={product?.precioAntes}
         price={product?.precio}
         installments={product?.cuotas}
-        width={450}
+        width={400}
         style={{
           position: 'absolute',
           left: 50,
-          top: 640,
+          top: 690,
         }}
       />
 
@@ -451,6 +450,7 @@ export default function Square({ product, image }) {
       >
         *Precio sujeto a variación
       </div>
+
     </div>
   );
 }

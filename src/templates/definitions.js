@@ -73,6 +73,18 @@ import GeneralPortrait11 from './11_general/Portrait';
 import GeneralLandscape11 from './11_general/Landscape';
 import GeneralStory11 from './11_general/Story';
 
+import DiscountSquare11 from './11_Discount/Square';
+import DiscountPortrait11 from './11_Discount/Portrait';
+import DiscountLandscape11 from './11_Discount/Landscape';
+import DiscountStory11 from './11_Discount/Story';
+
+import TVRegalosSquare11 from './11_tv_regalos/Square';
+import TVRegalosPortrait11 from './11_tv_regalos/Portrait';
+import TVRegalosLandscape11 from './11_tv_regalos/Landscape';
+import TVRegalosStory11 from './11_tv_regalos/Story';
+ 
+
+
 export const DESIGNS = [
   {
     id: 'expohaus',
@@ -180,4 +192,24 @@ export const DESIGNS = [
       story: { width: 1080, height: 1920, Component: GeneralStory11 },
     },
   },
+  {
+    id: '11_discount',
+    nombre: 'DESCUENTOS NOVIEMBRE',
+    formatos: {
+      square: { width: 1080, height: 1080, Component: DiscountSquare11 },
+      portrait: { width: 1080, height: 1350, Component: DiscountPortrait11 },
+      landscape: { width: 1920, height: 1080, Component: DiscountLandscape11 },
+      story: { width: 1080, height: 1920, Component: DiscountStory11 },
+    },
+  },
+  {
+    id: '11_tv_regalos',
+    nombre: 'TVS CON REGALOS',
+    formatos: {
+      square: { width: 1080, height: 1080, Component: TVRegalosSquare11 },
+      portrait: { width: 1080, height: 1350, Component: TVRegalosPortrait11 },
+      landscape: { width: 1920, height: 1080, Component: TVRegalosLandscape11 },
+      story: { width: 1080, height: 1920, Component: TVRegalosStory11 },
+    },
+  }, 
 ];
