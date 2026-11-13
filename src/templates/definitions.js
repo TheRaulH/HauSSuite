@@ -82,7 +82,11 @@ import TVRegalosSquare11 from './11_tv_regalos/Square';
 import TVRegalosPortrait11 from './11_tv_regalos/Portrait';
 import TVRegalosLandscape11 from './11_tv_regalos/Landscape';
 import TVRegalosStory11 from './11_tv_regalos/Story';
- 
+
+import BlackHausSquare11 from './11_blackhaus/Square';
+import BlackHausPortrait11 from './11_blackhaus/Portrait';
+import BlackHausLandscape11 from './11_blackhaus/Landscape';
+import BlackHausStory11 from './11_blackhaus/Story'; 
 
 
 export const DESIGNS = [
@@ -211,5 +215,15 @@ export const DESIGNS = [
       landscape: { width: 1920, height: 1080, Component: TVRegalosLandscape11 },
       story: { width: 1080, height: 1920, Component: TVRegalosStory11 },
     },
-  }, 
+  },
+  {
+    id: '11_blackhaus',
+    nombre: 'BLACK HAUS',
+    formatos: {
+      square: { width: 1080, height: 1080, Component: BlackHausSquare11 },
+      portrait: { width: 1080, height: 1350, Component: BlackHausPortrait11 },
+      landscape: { width: 1920, height: 1080, Component: BlackHausLandscape11 },
+      story: { width: 1080, height: 1920, Component: BlackHausStory11 },
+    },
+  },
 ];
