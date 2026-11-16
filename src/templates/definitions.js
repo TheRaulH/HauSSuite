@@ -88,6 +88,11 @@ import BlackHausPortrait11 from './11_blackhaus/Portrait';
 import BlackHausLandscape11 from './11_blackhaus/Landscape';
 import BlackHausStory11 from './11_blackhaus/Story'; 
 
+import BlackHausTvsSquare11 from './11_blackhaus_tvs/Square';
+import BlackHausTvsPortrait11 from './11_blackhaus_tvs/Portrait';
+import BlackHausTvsLandscape11 from './11_blackhaus_tvs/Landscape';
+import BlackHausTvsStory11 from './11_blackhaus_tvs/Story'; 
+
 
 export const DESIGNS = [
   {
@@ -226,4 +231,15 @@ export const DESIGNS = [
       story: { width: 1080, height: 1920, Component: BlackHausStory11 },
     },
   },
+  {
+    id: '11_blackhaus_tvs',
+    nombre: 'BLACK HAUS TVS',
+    formatos: {
+      square: { width: 1080, height: 1080, Component: BlackHausTvsSquare11 },
+      portrait: { width: 1080, height: 1350, Component: BlackHausTvsPortrait11 },
+      landscape: { width: 1920, height: 1080, Component: BlackHausTvsLandscape11 },
+      story: { width: 1080, height: 1920, Component: BlackHausTvsStory11 },
+    },
+  },
+ 
 ];
