@@ -1,9 +1,10 @@
-import { BookOpen, CalendarDays, GalleryHorizontal, Palette, Search } from 'lucide-react'
+import { BookOpen, CalendarDays, ChartColumn, GalleryHorizontal, Palette, Search } from 'lucide-react'
 import CarouselPage from '../modules/carousel/CarouselPage'
 import ImageFinderPage from '../modules/image-finder/ImageFinderPage'
 import BrandKitPage from '../modules/brand-kit/BrandKitPage'
 import CatalogPage from '../modules/catalog/CatalogPage'
 import CalendarPage from '../modules/calendar/CalendarPage'
+import ReportsPage from '../modules/reports/ReportsPage'
 
 /**
  * REGISTRO DE HERRAMIENTAS de HauSSuite.
@@ -33,6 +34,14 @@ export const TOOLS = [
     description: 'Planifica el mes de publicaciones, arrastra para reprogramar y marca lo ya publicado.',
     icon: CalendarDays,
     Component: CalendarPage,
+  },
+  {
+    id: 'reportes',
+    path: '/reportes',
+    label: 'Reportes',
+    description: 'Cómo nos fue: resultados, gráficos y si la inversión fue rentable. Empieza con la pauta de TikTok.',
+    icon: ChartColumn,
+    Component: ReportsPage,
   },
   {
     id: 'buscador-imagenes',

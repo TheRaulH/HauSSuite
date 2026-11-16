@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { CatalogProvider } from './suite/CatalogContext'
 import { useHashRoute } from './suite/useHashRoute'
 import { TOOLS } from './suite/tools'
+import { isToolPath } from './suite/matchTool'
 import Sidebar from './suite/Sidebar'
 import HomePage from './suite/HomePage'
 
@@ -12,7 +13,7 @@ import HomePage from './suite/HomePage'
  */
 function App() {
   const path = useHashRoute()
-  const active = TOOLS.find((t) => t.path === path) ?? null
+  const active = TOOLS.find((t) => isToolPath(t, path)) ?? null
 
   const [visited, setVisited] = useState(() => new Set(active ? [active.id] : []))
   if (active && !visited.has(active.id)) {

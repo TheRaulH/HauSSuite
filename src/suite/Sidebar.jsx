@@ -1,5 +1,6 @@
 import { House } from 'lucide-react'
 import Wordmark from './Wordmark'
+import { isToolPath } from './matchTool'
 
 export default function Sidebar({ tools, activePath }) {
   // Modo Experto: azul de base, arena para lo activo. Forma de marca en los ítems:
@@ -11,7 +12,7 @@ export default function Sidebar({ tools, activePath }) {
         : 'text-white/80 hover:bg-white/10 hover:text-white'
     }`
 
-  const homeActive = activePath === '/' || !tools.some((t) => t.path === activePath)
+  const homeActive = activePath === '/' || !tools.some((t) => isToolPath(t, activePath))
 
   return (
     <aside className="bg-haus-blue text-white md:w-64 md:shrink-0 md:h-screen md:sticky md:top-0 flex md:flex-col">
@@ -27,7 +28,7 @@ export default function Sidebar({ tools, activePath }) {
         </a>
         {tools.map((tool) => {
           const Icon = tool.icon
-          const active = activePath === tool.path
+          const active = isToolPath(tool, activePath)
           return (
             <a
               key={tool.id}
