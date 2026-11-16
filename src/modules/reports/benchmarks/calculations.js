@@ -66,6 +66,10 @@ export function buildTotalRows(consolidated, date, prevDate) {
     pick(date).map((r) => ({
       retail: r.retail,
       followers: r.total,
+      // Una columna por red: el gráfico apilado las usa como tramos de cada barra
+      facebook: r.facebook,
+      instagram: r.instagram,
+      tiktok: r.tiktok,
       breakdown: { Facebook: r.facebook, Instagram: r.instagram, TikTok: r.tiktok },
     })),
     prevMap
