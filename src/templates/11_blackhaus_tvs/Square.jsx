@@ -350,53 +350,51 @@ function BloqueRegalos({ regalos }) {
 // Las 63 asignaciones del Excel "teles bandeos.xlsx".
 // No se asignan regalos por pulgadas ni por marca.
 const REGALOS_POR_CODIGO = {
-  // Golpack
-  '65P6K': ['golpack'],
-  '75P6K': ['golpack'],
-  '55T6D': ['golpack'],
+  // Golpack + Conservadora
+  '65P6K': ['golpack', 'conservadora'],
+  '75P6K': ['golpack', 'conservadora'],
+  '55T6D': ['golpack', 'conservadora'],
 
-  // Pelota + conservadora
+  // Pelota + Conservadora
   '50S5K': ['pelota', 'conservadora'],
-  '50P735': ['pelota', 'conservadora'],
-  '50P755': ['pelota', 'conservadora'],
-  '50C645': ['pelota', 'conservadora'],
-  '50P7K': ['pelota', 'conservadora'],
 
-  // Pelota
-  '43S5K': ['pelota'],
-  '32S5K': ['pelota'],
-  '40S5K': ['pelota'],
-  '43S58K': ['pelota'],
-
-  // Conservadora + Alexa
-  'UN65U8000F': ['conservadora', 'alexa'],
-  'QN50Q7FAAGXZS': ['conservadora', 'alexa'],
-  'QN55Q7FAAGXZS': ['conservadora', 'alexa'],
+  // Pelota + Soporte
+  '43S5K': ['pelota', 'soporte'],
+  '32S5K': ['pelota', 'soporte'],
+  '40S5K': ['pelota', 'soporte'],
+  '43S58K': ['pelota', 'soporte'],
 
   // Conservadora
+  '50P735': ['conservadora'],
   '55P635I': ['conservadora'],
   'UN50AU7000': ['conservadora'],
   'UN50CU8000GXZS': ['conservadora'],
   'QN55Q60TAGXZS': ['conservadora'],
+  '50P755': ['conservadora'],
   'UN50DU8000GXZS': ['conservadora'],
   'UN55DU8000GXZS': ['conservadora'],
   'UN65DU8000GXZS': ['conservadora'],
   '55P755': ['conservadora'],
   '55C655': ['conservadora'],
   '65C655': ['conservadora'],
+  '50C645': ['conservadora'],
   '75P755': ['conservadora'],
   '75UR8750PSA': ['conservadora'],
   '50NANO77SRA': ['conservadora'],
   'UN75DU8000GXZS': ['conservadora'],
   '55C755': ['conservadora'],
   '55UT7300PSA': ['conservadora'],
+  '50P7K': ['conservadora'],
+  'UN65U8000F': ['conservadora'],
   '65P8K': ['conservadora'],
   '85P8K': ['conservadora'],
   '50UA7300PSB': ['conservadora'],
   '55UA7300PSB': ['conservadora'],
   '65UA7300PSB': ['conservadora'],
+  'QN50Q7FAAGXZS': ['conservadora'],
   'UN50U8000FGXZS': ['conservadora'],
   'UN65CU8000GXZS': ['conservadora'],
+  'QN55Q7FAAGXZS': ['conservadora'],
   'UN55U8000FGXZS': ['conservadora'],
   'UN50TU7100GXZ': ['conservadora'],
   'UN50AU8000GXZS': ['conservadora'],
