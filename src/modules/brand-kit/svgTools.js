@@ -1,5 +1,14 @@
 import { saveAs } from 'file-saver'
 
+/** Los logos oficiales usan currentColor: para exportarlos se fija el color elegido. */
+export function colorizeSvg(svgText, color) {
+  return svgText.replace(/currentColor/g, color)
+}
+
+export function svgDataUrl(svgText) {
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgText)}`
+}
+
 /** Lee el tamaño natural del SVG (viewBox o width/height). */
 function readSvgSize(svgText) {
   const doc = new DOMParser().parseFromString(svgText, 'image/svg+xml')
@@ -47,19 +56,19 @@ export async function svgToPngBlob(svgText, targetWidth = 2000) {
   }
 }
 
-export function downloadSvg(svgText, fileName) {
-  saveAs(new Blob([svgText], { type: 'image/svg+xml' }), `${fileName}.svg`)
+export function downloadSvg(svgText, fileName, color) {
+  saveAs(new Blob([colorizeSvg(svgText, color)], { type: 'image/svg+xml' }), `${fileName}.svg`)
 }
 
-export async function downloadPng(svgText, fileName, width = 2000) {
-  saveAs(await svgToPngBlob(svgText, width), `${fileName}.png`)
+export async function downloadPng(svgText, fileName, color, width = 2000) {
+  saveAs(await svgToPngBlob(colorizeSvg(svgText, color), width), `${fileName}.png`)
 }
 
 /** Copia la imagen (PNG) al portapapeles para pegarla directo en Canva, PowerPoint, etc. */
-export async function copyPngToClipboard(svgText, width = 1200) {
+export async function copyPngToClipboard(svgText, color, width = 1200) {
   if (!navigator.clipboard?.write || typeof ClipboardItem === 'undefined') {
     throw new Error('Este navegador no permite copiar imágenes')
   }
   // Se pasa la promesa para mantener el "gesto del usuario" (Safari lo exige)
-  await navigator.clipboard.write([new ClipboardItem({ 'image/png': svgToPngBlob(svgText, width) })])
+  await navigator.clipboard.write([new ClipboardItem({ 'image/png': svgToPngBlob(colorizeSvg(svgText, color), width) })])
 }
