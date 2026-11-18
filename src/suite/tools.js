@@ -1,9 +1,10 @@
-import { BookOpen, CalendarDays, ChartColumn, GalleryHorizontal, Palette, Search } from 'lucide-react'
+import { BookOpen, CalendarDays, ChartColumn, PartyPopper, GalleryHorizontal, Palette, Search } from 'lucide-react'
 import CarouselPage from '../modules/carousel/CarouselPage'
 import ImageFinderPage from '../modules/image-finder/ImageFinderPage'
 import BrandKitPage from '../modules/brand-kit/BrandKitPage'
 import CatalogPage from '../modules/catalog/CatalogPage'
 import CalendarPage from '../modules/calendar/CalendarPage'
+import InvitationsPage from '../modules/invitations/InvitationsPage'
 import ReportsPage from '../modules/reports/ReportsPage'
 
 /**
@@ -26,6 +27,14 @@ export const TOOLS = [
     description: 'Excel de productos → plantilla → PNG en todos los formatos, listo para descargar en ZIP.',
     icon: GalleryHorizontal,
     Component: CarouselPage,
+  },
+  {
+    id: 'invitaciones',
+    path: '/invitaciones',
+    label: 'Generador de invitaciones',
+    description: 'Elige una plantilla, edita textos, fecha y fotos y descarga Facebook, Instagram, Historias y horizontal.',
+    icon: PartyPopper,
+    Component: InvitationsPage,
   },
   {
     id: 'calendario',

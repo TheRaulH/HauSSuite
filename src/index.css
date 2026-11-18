@@ -9,6 +9,15 @@
   font-display: swap;
 }
 
+/* Montserrat (variable) — la usan las plantillas de Generador de invitaciones. Solo el subconjunto latino (cubre español). */
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./assets/fonts/Montserrat-latin.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Tipografía de texto para las plantillas: Outfit (Google Fonts). */
 @theme {
   --font-sans: 'Outfit', ui-sans-serif, system-ui, sans-serif;
