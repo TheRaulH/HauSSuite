@@ -1,345 +1,170 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import PageHeader from '../../suite/PageHeader'
 import { useCatalogContext } from '../../suite/CatalogContext'
-import { readSpreadsheet } from '../../utils/excelParser'
-import { normalizeDescripcion } from '../../utils/catalogModel'
-import { isDirectoryPickerSupported, pickImageFolder } from '../../utils/imageManager'
+import { useClipboard } from '../../suite/useClipboard'
+import FolderCard from './components/FolderCard'
+import ListCard from './components/ListCard'
+import ResultsPanel from './components/ResultsPanel'
 import {
-  parseList,
-  indexFiles,
-  resolveList,
-  isImageName,
+  ZIP_PART_LIMIT_BYTES,
+  collectZipEntries,
   downloadImagesZip,
   downloadReportCsv,
-  STATUS_LABEL,
+  indexFiles,
+  parseList,
+  resolveListAsync,
+  splitIntoParts,
 } from './finder'
+import { useDebouncedValue, usePersistentState } from './hooks'
+import { useImageFolder } from './useImageFolder'
 
-const STATUS_STYLE = {
-  ok: 'bg-green-50 text-green-700',
-  'sin-catalogo': 'bg-amber-50 text-amber-700',
-  'sin-imagen': 'bg-red-50 text-red-700',
-}
-
-function Thumb({ file }) {
-  const [url, setUrl] = useState(null)
-
-  useEffect(() => {
-    if (!file) return
-    const objectUrl = URL.createObjectURL(file)
-    setUrl(objectUrl)
-    return () => URL.revokeObjectURL(objectUrl)
-  }, [file])
-
-  if (!file || !url) return <div className="w-10 h-10 rounded bg-gray-100 border border-gray-200" />
-  return <img src={url} alt="" loading="lazy" className="w-10 h-10 rounded object-contain bg-white border border-gray-200" />
-}
+const STORAGE_KEY = 'hausuite:buscador-imagenes'
+const EMPTY_ANALYSIS = { rows: [], done: 0, total: 0, running: false }
 
 export default function ImageFinderPage() {
   const catalog = useCatalogContext()
+  const folder = useImageFolder()
+  const { copiedKey, copyText } = useClipboard(2000)
 
-  const [listText, setListText] = useState('')
-  const [files, setFiles] = useState([])
-  const [isScanning, setIsScanning] = useState(false)
-  const [numbered, setNumbered] = useState(false)
-  const [message, setMessage] = useState(null) // { type: 'error' | 'info', text }
-  const [isZipping, setIsZipping] = useState(false)
+  // La lista y las opciones sobreviven a recargar la página.
+  const [saved, patchSaved, saveState] = usePersistentState(STORAGE_KEY, { listText: '', numbered: false })
+  const { listText, numbered } = saved
 
-  // Excel opcional con la lista
-  const [sheet, setSheet] = useState(null) // { headers, rows }
-  const [column, setColumn] = useState('')
+  const [filter, setFilter] = useState('all')
+  const [query, setQuery] = useState('')
+  const [analysis, setAnalysis] = useState(EMPTY_ANALYSIS)
+  const [zipState, setZipState] = useState({ busy: false, part: 1, parts: 1, percent: 0 })
+  const [message, setMessage] = useState(null)
 
-  const listInputRef = useRef(null)
-  const filesInputRef = useRef(null)
+  // El análisis espera a que el usuario deje de escribir: pegar o editar una lista enorme no congela nada.
+  const debouncedText = useDebouncedValue(listText, 450)
+  const pending = debouncedText !== listText
+  const lines = useMemo(() => parseList(debouncedText), [debouncedText])
+  const lineCount = useMemo(() => (pending ? parseList(listText).length : lines.length), [pending, listText, lines])
+  const index = useMemo(() => indexFiles(folder.files), [folder.files])
 
-  const lines = useMemo(() => parseList(listText), [listText])
-  const index = useMemo(() => indexFiles(files), [files])
-  const rows = useMemo(() => resolveList(lines, catalog.lookup, index), [lines, catalog.lookup, index])
+  const ready = catalog.loaded && folder.status === 'ready' && folder.files.length > 0 && lines.length > 0
 
-  const found = rows.filter((r) => r.status === 'ok')
-  const uniqueFound = new Set(found.map((r) => r.file)).size
-  const noCatalog = rows.filter((r) => r.status === 'sin-catalogo').length
-  const noImage = rows.filter((r) => r.status === 'sin-imagen').length
-
-  async function handleFolderPick() {
-    setMessage(null)
-    setIsScanning(true)
-    try {
-      const picked = await pickImageFolder()
-      if (picked.length === 0) setMessage({ type: 'error', text: 'No se encontraron imágenes en esa carpeta.' })
-      setFiles(picked)
-    } catch (err) {
-      if (err?.name !== 'AbortError') {
-        console.error(err)
-        setMessage({ type: 'error', text: 'No se pudo leer la carpeta seleccionada.' })
-      }
-    } finally {
-      setIsScanning(false)
+  useEffect(() => {
+    if (!ready) {
+      setAnalysis(EMPTY_ANALYSIS)
+      return undefined
     }
-  }
+    const controller = new AbortController()
+    setAnalysis({ rows: [], done: 0, total: lines.length, running: true })
+    resolveListAsync(lines, catalog.lookup, index, {
+      signal: controller.signal,
+      onProgress: (done, total) => setAnalysis((a) => (a.running ? { ...a, done, total } : a)),
+    }).then((rows) => {
+      if (rows) setAnalysis({ rows, done: lines.length, total: lines.length, running: false })
+    })
+    return () => controller.abort()
+  }, [ready, lines, index, catalog.lookup])
 
-  function handleFilesPick(e) {
-    const picked = Array.from(e.target.files ?? []).filter((f) => isImageName(f.name))
-    e.target.value = ''
-    if (picked.length === 0) {
-      setMessage({ type: 'error', text: 'No se encontraron imágenes en la selección.' })
-      return
-    }
-    setMessage(null)
-    setFiles(picked)
-  }
+  const { rows } = analysis
 
-  function fillFromColumn(sheetData, columnName) {
-    const values = sheetData.rows.map((r) => String(r[columnName] ?? '').trim()).filter(Boolean)
-    setListText(values.join('\n'))
-  }
+  const counts = useMemo(() => {
+    const c = { ok: 0, 'sin-imagen': 0, 'sin-catalogo': 0 }
+    for (const r of rows) c[r.status] += 1
+    return c
+  }, [rows])
 
-  async function handleListFile(e) {
-    const file = e.target.files?.[0]
-    e.target.value = ''
-    if (!file) return
-    try {
-      const data = await readSpreadsheet(file)
-      if (data.headers.length === 0) throw new Error('vacío')
-      const guess =
-        data.headers.find((h) =>
-          ['descripcion', 'nombre', 'producto', 'detalle'].includes(normalizeDescripcion(h))
-        ) ?? data.headers[0]
-      setSheet(data)
-      setColumn(guess)
-      fillFromColumn(data, guess)
-      setMessage(null)
-    } catch (err) {
-      console.error(err)
-      setMessage({ type: 'error', text: 'No se pudo leer el archivo de la lista.' })
-    }
-  }
+  const visible = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    return rows.filter(
+      (r) =>
+        (filter === 'all' || r.status === filter) &&
+        (!q || r.line.toLowerCase().includes(q) || (r.code ?? '').toLowerCase().includes(q) || (r.file?.name ?? '').toLowerCase().includes(q))
+    )
+  }, [rows, filter, query])
+
+  const zipInfo = useMemo(() => {
+    const entries = collectZipEntries(rows, { numbered })
+    const bytes = entries.reduce((sum, e) => sum + e.file.size, 0)
+    return { count: entries.length, bytes, expectedParts: bytes > ZIP_PART_LIMIT_BYTES ? splitIntoParts(entries).length : 1 }
+  }, [rows, numbered])
 
   async function handleZip() {
-    setIsZipping(true)
     setMessage(null)
+    setZipState({ busy: true, part: 1, parts: 1, percent: 0 })
     try {
-      const count = await downloadImagesZip(rows, { numbered })
-      setMessage({ type: 'info', text: `ZIP descargado con ${count} imágenes originales.` })
+      const result = await downloadImagesZip(rows, {
+        numbered,
+        onProgress: ({ part, parts, percent }) => setZipState({ busy: true, part, parts, percent }),
+      })
+      setMessage({
+        type: 'info',
+        text:
+          result.parts > 1
+            ? `Listo: ${result.count} imágenes originales en ${result.parts} ZIP. Si el navegador pregunta, permite las descargas múltiples.`
+            : `Listo: ZIP con ${result.count} imágenes originales.`,
+      })
     } catch (err) {
       console.error(err)
-      setMessage({ type: 'error', text: 'No se pudo generar el ZIP.' })
+      setMessage({ type: 'error', text: 'No se pudo generar el ZIP. Prueba con una lista más corta.' })
     } finally {
-      setIsZipping(false)
+      setZipState({ busy: false, part: 1, parts: 1, percent: 0 })
     }
   }
 
-  const catalogStatus = catalog.loading
-    ? 'Cargando catálogo…'
-    : catalog.error
-      ? 'No se pudo cargar el catálogo (se buscará solo por código)'
-      : `Catálogo: ${catalog.entries.length} productos`
+  function handleCopyMissing() {
+    copyText(
+      rows
+        .filter((r) => r.status !== 'ok')
+        .map((r) => r.line)
+        .join('\n'),
+      'missing'
+    )
+  }
+
+  // Qué mostrar cuando todavía no hay resultados
+  let hint = null
+  if (!catalog.loaded) hint = 'Cargando el catálogo de productos…'
+  else if (folder.status !== 'ready') hint = 'Primero elige la carpeta de imágenes (paso 1).'
+  else if (lineCount === 0) hint = 'Pega o escribe tu lista de productos (paso 2): el resultado aparece acá y se actualiza solo.'
+  else if (analysis.running && rows.length === 0) hint = 'Buscando las imágenes…'
 
   return (
     <>
-      <PageHeader
-        title="Buscador de imágenes"
-        description="Lista de productos → imágenes originales de tu carpeta → ZIP"
-      />
+      <PageHeader title="Buscador de imágenes" description="Lista de productos → imágenes originales de tu carpeta → ZIP" />
 
-      <div className="max-w-5xl mx-auto px-6 py-6 flex flex-col gap-6">
-        {/* 1. Carpeta */}
-        <section className="bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
-          <h3 className="font-medium text-gray-800">1. Carpeta de imágenes</h3>
-          <div className="flex flex-wrap items-center gap-3">
-            {isDirectoryPickerSupported() ? (
-              <button
-                type="button"
-                onClick={handleFolderPick}
-                disabled={isScanning}
-                className="px-3 py-1.5 text-sm rounded-md bg-haus-blue text-white hover:opacity-90 disabled:opacity-50"
-              >
-                {isScanning ? 'Escaneando carpeta…' : files.length ? 'Cambiar carpeta' : 'Seleccionar carpeta'}
-              </button>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  onClick={() => filesInputRef.current?.click()}
-                  className="px-3 py-1.5 text-sm rounded-md bg-haus-blue text-white hover:opacity-90"
-                >
-                  Seleccionar carpeta
-                </button>
-                <input
-                  ref={filesInputRef}
-                  type="file"
-                  webkitdirectory=""
-                  multiple
-                  className="hidden"
-                  onChange={handleFilesPick}
-                />
-              </>
-            )}
-            <span className="text-sm text-gray-500">
-              {files.length > 0
-                ? `${files.length} imágenes encontradas (incluye subcarpetas)`
-                : 'Elegí la carpeta principal (ej. PRODUCTOS); se recorren todas las subcarpetas.'}
-            </span>
-          </div>
-          <p className="text-xs text-gray-400">
-            Las imágenes no se suben a ningún lado: se leen en tu navegador. Si un código está en varias
-            subcarpetas, se usa la más reciente.
-          </p>
-        </section>
-
-        {/* 2. Lista */}
-        <section className="bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
-          <div className="flex items-center justify-between flex-wrap gap-2">
-            <h3 className="font-medium text-gray-800">2. Lista de productos</h3>
-            <span className="text-xs text-gray-400">{catalogStatus}</span>
-          </div>
-
-          <textarea
-            value={listText}
-            onChange={(e) => setListText(e.target.value)}
-            rows={6}
-            placeholder={'Pegá una descripción por línea (podés copiarlas de una columna de Excel)\nRefrigerador Samsung 300L...\nTelevisor LG 55" 4K...'}
-            className="w-full text-sm border border-gray-300 rounded-md p-3 font-mono focus:outline-none focus:ring-2 focus:ring-haus-blue/30"
-          />
-
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              onClick={() => listInputRef.current?.click()}
-              className="px-3 py-1.5 text-sm rounded-md border border-gray-300 text-gray-600 hover:bg-gray-50"
-            >
-              Cargar lista desde Excel / CSV
-            </button>
-            <input
-              ref={listInputRef}
-              type="file"
-              accept=".xlsx,.xls,.csv"
-              className="hidden"
-              onChange={handleListFile}
+      <div className="max-w-[1500px] mx-auto px-4 md:px-6 py-4">
+        <div className="grid gap-4 lg:grid-cols-[minmax(320px,400px)_1fr] lg:h-[calc(100vh-9rem)] lg:min-h-[600px]">
+          <aside className="flex flex-col gap-4 min-h-0">
+            <FolderCard folder={folder} />
+            <ListCard
+              text={listText}
+              onChange={(value) => patchSaved({ listText: value })}
+              lineCount={lineCount}
+              pending={pending}
+              saveState={saveState}
             />
+          </aside>
 
-            {sheet && sheet.headers.length > 1 && (
-              <label className="flex items-center gap-2 text-sm text-gray-600">
-                Columna:
-                <select
-                  value={column}
-                  onChange={(e) => {
-                    setColumn(e.target.value)
-                    fillFromColumn(sheet, e.target.value)
-                  }}
-                  className="border border-gray-300 rounded-md px-2 py-1 text-sm"
-                >
-                  {sheet.headers.map((h) => (
-                    <option key={h} value={h}>
-                      {h}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            )}
-
-            {listText && (
-              <button
-                type="button"
-                onClick={() => {
-                  setListText('')
-                  setSheet(null)
-                }}
-                className="text-sm text-gray-400 hover:text-gray-600"
-              >
-                Limpiar lista
-              </button>
-            )}
+          <div className="min-h-0 h-[75vh] lg:h-auto flex flex-col gap-2">
+            <ResultsPanel
+              hint={hint}
+              rows={rows}
+              visible={visible}
+              counts={counts}
+              filter={filter}
+              onFilter={setFilter}
+              query={query}
+              onQuery={setQuery}
+              analysis={analysis}
+              zip={{ ...zipInfo, ...zipState }}
+              onZip={handleZip}
+              onCsv={() => downloadReportCsv(rows)}
+              onCopyMissing={handleCopyMissing}
+              copiedKey={copiedKey}
+              message={message}
+            />
+            <label className="flex items-center gap-2 text-xs text-gray-500 cursor-pointer px-2">
+              <input type="checkbox" checked={numbered} onChange={(e) => patchSaved({ numbered: e.target.checked })} />
+              Numerar los archivos del ZIP según el orden de la lista (001_, 002_…)
+            </label>
           </div>
-          <p className="text-xs text-gray-400">
-            Cada descripción se busca en el catálogo para obtener su código. Si una línea no está en el
-            catálogo pero es un código (ej. HR-2260-90), se busca directamente.
-          </p>
-        </section>
-
-        {/* 3. Resultado */}
-        {rows.length > 0 && (
-          <section className="bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-4">
-            <div className="flex items-center justify-between flex-wrap gap-3">
-              <div>
-                <h3 className="font-medium text-gray-800">3. Resultado</h3>
-                <p className="text-sm text-gray-500">
-                  {found.length} de {rows.length} encontradas
-                  {noCatalog > 0 && ` · ${noCatalog} no están en el catálogo`}
-                  {noImage > 0 && ` · ${noImage} sin imagen en la carpeta`}
-                </p>
-                {files.length === 0 && (
-                  <p className="text-sm text-amber-600">Elegí la carpeta de imágenes para buscarlas.</p>
-                )}
-              </div>
-
-              <div className="flex flex-wrap items-center gap-3">
-                <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-                  <input type="checkbox" checked={numbered} onChange={(e) => setNumbered(e.target.checked)} />
-                  Numerar según el orden de la lista
-                </label>
-                <button
-                  type="button"
-                  onClick={() => downloadReportCsv(rows)}
-                  className="px-3 py-1.5 text-sm rounded-md border border-gray-300 text-gray-600 hover:bg-gray-50"
-                >
-                  Reporte (.csv)
-                </button>
-                <button
-                  type="button"
-                  onClick={handleZip}
-                  disabled={uniqueFound === 0 || isZipping}
-                  className="px-4 py-2 text-sm rounded-md bg-green-600 text-white hover:bg-green-700 disabled:opacity-50"
-                >
-                  {isZipping ? 'Preparando ZIP…' : `Descargar ZIP (${uniqueFound})`}
-                </button>
-              </div>
-            </div>
-
-            {message && (
-              <p className={`text-sm ${message.type === 'error' ? 'text-red-500' : 'text-green-600'}`}>
-                {message.text}
-              </p>
-            )}
-
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-left text-xs text-gray-400 border-b border-gray-200">
-                    <th className="py-2 pr-3 font-medium w-12"></th>
-                    <th className="py-2 pr-3 font-medium">Descripción</th>
-                    <th className="py-2 pr-3 font-medium">Código</th>
-                    <th className="py-2 pr-3 font-medium">Archivo</th>
-                    <th className="py-2 font-medium">Estado</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows.map((row) => (
-                    <tr key={row.id} className="border-b border-gray-100 align-middle">
-                      <td className="py-2 pr-3">
-                        <Thumb file={row.file} />
-                      </td>
-                      <td className="py-2 pr-3 text-gray-700 max-w-xs truncate" title={row.line}>
-                        {row.line}
-                      </td>
-                      <td className="py-2 pr-3 font-mono text-xs text-gray-600">{row.code ?? '—'}</td>
-                      <td className="py-2 pr-3 text-xs text-gray-500">
-                        {row.file ? row.file.name : '—'}
-                        {row.candidates > 1 && (
-                          <span className="text-gray-400"> ({row.candidates} versiones, la más reciente)</span>
-                        )}
-                      </td>
-                      <td className="py-2">
-                        <span className={`px-2 py-0.5 rounded-full text-xs whitespace-nowrap ${STATUS_STYLE[row.status]}`}>
-                          {STATUS_LABEL[row.status]}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-        )}
+        </div>
       </div>
     </>
   )
