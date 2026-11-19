@@ -341,7 +341,7 @@ export default function Square({ product, image }) {
             left: 500,
             top: 280,
             width: 550,
-            height: 670,
+            height: 870, 
             objectFit: 'contain',
           }}
         />
@@ -352,7 +352,7 @@ export default function Square({ product, image }) {
         style={{
           position: 'absolute',
           left: 50,
-          top: 380,
+          top: 470,
           width: 444,
           height: 220,
           fontSize: 70,
@@ -372,7 +372,7 @@ export default function Square({ product, image }) {
           style={{
             position: 'absolute',
             left: 50,
-            top: 612,
+            top: 750,
             maxWidth: 444,
             height: 50,
             fontSize: 30,
@@ -411,7 +411,7 @@ export default function Square({ product, image }) {
         style={{
           position: 'absolute',
           left: 50,
-          top: 690,
+          top: 850,
         }}
       />
 
@@ -439,8 +439,8 @@ export default function Square({ product, image }) {
       <div
         style={{
           position: 'absolute',
-          left: 90,
-          top: 1020,
+          left: 70,
+          top: 1100,
           width: 500,
           fontSize: 18,
           fontWeight: 400,
