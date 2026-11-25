@@ -420,8 +420,8 @@ export default function Square({ product, image }) {
         <div
           style={{
             position: 'absolute',
-            left: 90,
-            top: 990,
+            left: 70,
+            top: 1150,
             width: 900,
             fontSize: 24,
             fontWeight: 700,
