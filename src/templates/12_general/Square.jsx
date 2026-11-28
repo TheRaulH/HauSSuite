@@ -68,38 +68,50 @@ const esCodigoModelo = (t) => /^[A-Z]{2,6}-?\d{2,}[A-Z0-9-]*\+?$/i.test(t);
 const esEspecificacion = (t) =>
   t.includes('*') || /^[OCSL]{1,2}\d{2}(\/\d{2})?[,]?$/i.test(t);
 
+const COLORES = {
+  NEGRO: 'NEGRO',
+  GREY: 'GRIS',
+  GRIS: 'GRIS',
+  SILVER: 'PLATA',
+  PLATA: 'PLATA',
+  AZUL: 'AZUL',
+  OCEAN: 'OCEAN',
+  STARRY: 'STARRY',
+  MIDNIGHT: 'MIDNIGHT',
+  ALPS: 'ALPS',
+  SHADOW: 'SHADOW',
+  CLOUDLINE: 'CLOUDLINE',
+  POLARIS: 'POLARIS',
+  VERDE: 'VERDE',
+  VIOLETA: 'VIOLETA',
+  QUIET: 'QUIET',
+  FOREST: 'FOREST',
+  SUNRISE: 'SUNRISE',
+  CELESTE: 'CELESTE',
+  SUNLIKE: 'SUNLIKE',
+  CAFE: 'CAFÉ',
+  CAFÉ: 'CAFÉ',
+  BLANCO: 'BLANCO',
+  ROJO: 'ROJO',
+  BEIGE: 'BEIGE',
+  DORADO: 'DORADO',
+  MARRON: 'MARRÓN',
+  MARRÓN: 'MARRÓN',
+};
+
 const expandirToken = (token) => {
   const key = token.toUpperCase();
   if (MARCAS[key]) return MARCAS[key];
   if (ABREVIATURAS[key]) return ABREVIATURAS[key];
 
-  // C/TAPA -> CON TAPA | S/TAPA -> SIN TAPA | P/HORNO -> PARA HORNO
-  // C/NEGRO -> COLOR NEGRO
-  if (key === 'C/NEGRO') return 'COLOR NEGRO';
-  if (key === 'C/GREY') return 'COLOR GRIS';
-  if (key === 'C/SILVER') return 'COLOR PLATA';
-  if (key === 'C/AZUL') return 'COLOR AZUL';
-  if (key === 'C/OCEAN') return 'COLOR OCEAN';
-  if (key === 'C/STARRY') return 'COLOR STARRY';
-  if (key === 'C/MIDNIGHT') return 'COLOR MIDNIGHT';
-  if (key === 'C/ALPS') return 'COLOR ALPS';
-  if (key === 'C/SHADOW') return 'COLOR SHADOW';
-  if (key === 'C/CLOUDLINE') return 'COLOR CLOUDLINE';
-  if (key === 'C/POLARIS') return 'COLOR POLARIS';
-  if (key === 'C/VERDE') return 'COLOR VERDE';
-  if (key === 'C/VIOLETA') return 'COLOR VIOLETA';
-  if (key === 'C/QUIET') return 'COLOR QUIET';
-  if (key === 'C/FOREST') return 'COLOR FOREST';
-  if (key === 'C/SUNRISE') return 'COLOR SUNRISE';
-  if (key === 'C/CELESTE') return 'COLOR CELESTE';
-  if (key === 'C/SUNLIKE') return 'COLOR SUNLIKE';
-
-
   const m = key.match(/^([CSP])\/(.+)$/);
-
   if (m) {
-    const prep = { C: 'CON', S: 'SIN', P: 'PARA' }[m[1]];
-    return `${prep} ${m[2]}`;
+    const [, prefijo, resto] = m;
+    if (prefijo === 'C' && COLORES[resto]) {
+      return `COLOR ${COLORES[resto]}`;
+    }
+    const prep = { C: 'CON', S: 'SIN', P: 'PARA' }[prefijo];
+    return `${prep} ${resto}`;
   }
 
   return token;
