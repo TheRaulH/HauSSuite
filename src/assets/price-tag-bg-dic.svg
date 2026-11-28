@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_1" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1080 551.7">
+  <!-- Generator: Adobe Illustrator 29.0.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 186)  -->
+  <defs>
+    <style>
+      .st0 {
+        font-size: 84.1px;
+      }
+
+      .st0, .st1, .st2, .st3 {
+        isolation: isolate;
+      }
+
+      .st0, .st1, .st4, .st3 {
+        fill: #004270;
+      }
+
+      .st0, .st3 {
+        font-family: Outfit-Bold, Outfit;
+        font-weight: 700;
+      }
+
+      .st5 {
+        fill: none;
+      }
+
+      .st1 {
+        font-family: Outfit-SemiBold, Outfit;
+        font-size: 60.5px;
+        font-weight: 600;
+      }
+
+      .st6 {
+        fill: #f0e3ce;
+        fill-rule: evenodd;
+      }
+
+      .st7 {
+        fill: #ff5300;
+      }
+
+      .st3 {
+        font-size: 73.4px;
+      }
+
+      .st8 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <path class="st5" d="M944.5,551.7H74c-40.9,0-74-33.1-74-74v-20.9c0-40.9,33.1-74,74-74h942.6c.5,0,1,.4,1,1v94.7c0,40.3-32.7,73-73,73h0Z"/>
+    </clipPath>
+  </defs>
+  <path class="st7" d="M0,22.7v213.9c0,53.5,47.3,96.8,105.7,96.8h847.1c38.5,0,74.9-17,99.1-46.3h0c18.2-22.1,28.1-49.6,28.1-77.9V22.7H0Z"/>
+  <path class="st6" d="M0,0v92.7h337.8c4.9,0,9.7-2,13.2-5.5l20.1-20.1c3.5-3.5,5.4-8.2,5.4-13.2V0H0Z"/>
+  <g class="st2">
+    <g class="st2">
+      <text class="st0" transform="translate(76.6 71.2)"><tspan x="0" y="0">Aho</tspan></text>
+    </g>
+    <g class="st2">
+      <text class="st0" transform="translate(234.3 71.2)"><tspan x="0" y="0">r</tspan></text>
+    </g>
+    <g class="st2">
+      <text class="st0" transform="translate(269.1 71.2)"><tspan x="0" y="0">a</tspan></text>
+    </g>
+  </g>
+  <g>
+    <path class="st6" d="M1007,551.7H74c-40.9,0-74-33.1-74-74v-20.9c0-40.9,33.1-74,74-74h1005c.5,0,1,.4,1,1v94.7c0,40.3-32.7,73-73,73h0Z"/>
+    <g class="st2">
+      <g class="st2">
+        <text class="st3" transform="translate(57 485.5)"><tspan x="0" y="0">C</tspan></text>
+      </g>
+      <g class="st2">
+        <text class="st3" transform="translate(107.8 485.5)"><tspan x="0" y="0">r</tspan></text>
+      </g>
+      <g class="st2">
+        <text class="st3" transform="translate(138.9 485.5)"><tspan x="0" y="0">ediHaus</tspan></text>
+      </g>
+    </g>
+    <rect class="st4" x="442.9" y="410" width="1.9" height="108.2" rx="1" ry="1"/>
+    <g class="st2">
+      <g class="st2">
+        <text class="st1" transform="translate(474.4 484.8)"><tspan x="0" y="0">11 cu</tspan></text>
+      </g>
+      <g class="st2">
+        <text class="st1" transform="translate(592.5 484.8)"><tspan x="0" y="0">ot</tspan></text>
+      </g>
+      <g class="st2">
+        <text class="st1" transform="translate(649 484.8)"><tspan x="0" y="0">as</tspan></text>
+      </g>
+    </g>
+    <g class="st8">
+      <path class="st7" d="M-31.6,504.4h-258.7c-40.3,0-73-32.7-73-73v-22.8c0-40.3,32.7-73,73-73H41.4v95.7c0,40.3-32.7,73-73,73h.1Z"/>
+    </g>
+  </g>
+</svg>

@@ -93,6 +93,11 @@ import BlackHausTvsPortrait11 from './11_blackhaus_tvs/Portrait';
 import BlackHausTvsLandscape11 from './11_blackhaus_tvs/Landscape';
 import BlackHausTvsStory11 from './11_blackhaus_tvs/Story'; 
 
+import GeneralSquare12 from './12_general/Square';
+import GeneralPortrait12 from './12_general/Portrait';
+import GeneralLandscape12 from './12_general/Landscape';
+import GeneralStory12 from './12_general/Story';
+
 
 export const DESIGNS = [
   {
@@ -239,6 +244,16 @@ export const DESIGNS = [
       portrait: { width: 1080, height: 1350, Component: BlackHausTvsPortrait11 },
       landscape: { width: 1920, height: 1080, Component: BlackHausTvsLandscape11 },
       story: { width: 1080, height: 1920, Component: BlackHausTvsStory11 },
+    },
+  },
+  {
+    id: '12_general',
+    nombre: 'GENERAL DICIEMBRE',
+    formatos: {
+      square: { width: 1080, height: 1080, Component: GeneralSquare12 },
+      portrait: { width: 1080, height: 1350, Component: GeneralPortrait12 },
+      landscape: { width: 1920, height: 1080, Component: GeneralLandscape12 },
+      story: { width: 1080, height: 1920, Component: GeneralStory12 },
     },
   },
  
