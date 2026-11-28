@@ -1,7 +1,6 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FolderOpen, FolderSync, LoaderCircle, RefreshCw } from 'lucide-react';
 import { formatInt } from '../../reports/format';
-import { useEffect, useRef, useState } from 'react';
 
 function useElapsed(active, ms) {
   const [elapsed, setElapsed] = useState(false);
@@ -25,6 +24,8 @@ const secondary =
 export default function FolderCard({ folder }) {
   const inputRef = useRef(null);
   const { status, name, count, error, supported } = folder;
+  const slow = useElapsed(status === 'checking', 3000);
+  const choose = supported ? folder.pick : () => inputRef.current?.click();
 
   let body;
   if (status === 'checking') {
@@ -97,11 +98,7 @@ export default function FolderCard({ folder }) {
               <RefreshCw size={13} aria-hidden /> Actualizar
             </button>
           )}
-          <button
-            type="button"
-            onClick={supported ? folder.pick : () => inputRef.current?.click()}
-            className={secondary}
-          >
+          <button type="button" onClick={choose} className={secondary}>
             Cambiar
           </button>
         </div>
@@ -116,11 +113,7 @@ export default function FolderCard({ folder }) {
           {supported ? ' y se recuerda para la próxima vez.' : '.'}
         </p>
         <div>
-          <button
-            type="button"
-            onClick={supported ? folder.pick : () => inputRef.current?.click()}
-            className={primary}
-          >
+          <button type="button" onClick={choose} className={primary}>
             <FolderOpen size={16} aria-hidden /> Seleccionar carpeta
           </button>
         </div>
